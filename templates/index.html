@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Accelerometer Recorder</title>
+
+<style>
+    body {
+        background: #f7f7f7;
+        font-family: "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 320px;
+    }
+
+    h2 {
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #startBtn {
+        background-color: #4CAF50;
+        color: white;
+    }
+    #startBtn:hover {
+        background-color: #45a049;
+    }
+
+    #stopBtn {
+        background-color: #e53935;
+        color: white;
+    }
+    #stopBtn:hover {
+        background-color: #d32f2f;
+    }
+    #RBtn {
+        background-color: #1E90FF;
+        color: white;
+    }
+    #RBtn:hover {
+        background-color: #0A2540;
+    }
+    .status {
+        margin-top: 20px;
+        font-size: 15px;
+        color: #555;
+    }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h2>Accelerometer Recorder</h2>
+
+    <button id="startBtn" onclick="sendCommand('start')">Start Recording</button>
+    <button id="stopBtn" onclick="sendCommand('stop')">Stop Recording</button>
+    <button  id="RBtn" onclick="window.location.href='/resault'">Show Resault</button>
+    <div class="status" id="statusText">Status: Idle</div>
+</div>
+
+<script>
+function sendCommand(action) {
+    fetch("/toggle", {
+        method: "POST",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: "action=" + action
+    })
+    .then(r => r.text())
+    .then(text => {
+        document.getElementById("statusText").innerText = 
+            "Status: " + (action === "start" ? "Recording…" : "Stopped");
+    });
+}
+</script>
+
+</body>
+</html>
